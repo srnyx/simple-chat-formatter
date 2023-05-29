@@ -7,7 +7,7 @@ An extremely simple chat formatter for Spigot servers. Supports PlaceholderAPI a
 
 ## Download
 
-- **✅ Stable:** You can download the latest **stable** version at [Modrinth](https://modrinth.com/plugin/simple-chat-formatter), [Hangar](https://hangar.papermc.io/srnyx/SimpleChatFormatter), [Polymart](https://polymart.org/resource/####), [Spigot](https://spigotmc.org/resources/######), [BuiltByBit](https://builtbybit.com/resources/#####), or [Bukkit](https://dev.bukkit.org/projects/simple-chat-formatter)
+- **✅ Stable:** You can download the latest **stable** version at [Modrinth](https://modrinth.com/plugin/simple-chat-formatter), [Hangar](https://hangar.papermc.io/srnyx/SimpleChatFormatter), [Polymart](https://polymart.org/resource/####), [Spigot](https://spigotmc.org/resources/######), [BuiltByBit](https://builtbybit.com/resources/29077), or [Bukkit](https://dev.bukkit.org/projects/simple-chat-formatter)
 - **🚧 Snapshot:** You can download the latest **snapshot** version at [actions/workflows/build.yml](https://github.com/srnyx/simple-chat-formatter/actions/workflows/build.yml)
 
 # Wiki
