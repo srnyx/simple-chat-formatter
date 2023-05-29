@@ -35,5 +35,5 @@ jobs:
       - name: Upload artifacts
         uses: "actions/upload-artifact@v3.1.1"
         with:
-          name: Artifact
+          name: Simple Chat Formatter
           path: build/libs

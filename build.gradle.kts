@@ -11,11 +11,14 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots") // org.spigotmc:spigot-api
     maven("https://oss.sonatype.org/content/repositories/snapshots") // org.spigotmc:spigot-api
     maven("https://jitpack.io") // xyz.srnyx:annoying-api
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi") // me.clip:placeholderapi
 }
 
 dependencies {
-    compileOnly("org.spigotmc", "spigot-api", "1.11-R0.1-SNAPSHOT")
-	implementation("xyz.srnyx", "annoying-api", "2.0.5")
+    compileOnly("org.spigotmc", "spigot-api", "1.8.8-R0.1-SNAPSHOT")
+	implementation("xyz.srnyx", "annoying-api", "c1e9583430")
+    compileOnly("me.clip", "placeholderapi", "2.11.3")
+    compileOnly("org.jetbrains", "annotations", "24.0.0")
 }
 
 tasks {

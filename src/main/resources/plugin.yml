@@ -1,8 +1,25 @@
 name: ${name}
-description: DESCRIPTION
+description: A very simple plugin to format your chat!
 authors:
   - srnyx
-website: https://srnyx.xyz
+website: https://srnyx.com
 
-main: xyz.srnyx.NAME.NAME
+main: xyz.srnyx.simplechatformatter.SimpleChatFormatter
 version: ${version}
+
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  chatreload:
+    description: Reloads the plugin
+    aliases:
+      - cr
+      - scfreload
+    permission: chat.reload
+
+permissions:
+  chat.reload:
+    description: Allows the player to use /chatreload
+  chat.format:
+    description: Allows the player to use formatting codes
