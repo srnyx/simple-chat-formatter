@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import xyz.srnyx.annoyingapi.AnnoyingListener;
 import xyz.srnyx.annoyingapi.utility.AnnoyingUtility;
 
+import java.util.UnknownFormatConversionException;
+import java.util.logging.Level;
+
 
 public class ChatListener implements AnnoyingListener {
     @NotNull private final SimpleChatFormatter plugin;
@@ -36,6 +39,13 @@ public class ChatListener implements AnnoyingListener {
         // Set format
         String format = plugin.format;
         if (plugin.papiInstalled) format = PlaceholderAPI.setPlaceholders(player, format);
-        event.setFormat(AnnoyingUtility.color(format).replace("%message%", "%2$s"));
+        format = AnnoyingUtility.color(format);
+        try {
+            event.setFormat(format
+                    .replace("%player%", "%1$s")
+                    .replace("%message%", "%2$s"));
+        } catch (final UnknownFormatConversionException e) {
+            plugin.log(Level.WARNING, "Formatting error! Look for any unparsed placeholders (except %player% and %message%): " + format);
+        }
     }
 }
