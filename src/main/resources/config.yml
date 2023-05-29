@@ -1,2 +1,3 @@
-# PlaceholderAPI placeholders and color codes are supported
-format: "<%player_name%> %message%"
+# PlaceholderAPI placeholders and formatting codes are supported
+# The only default placeholders are %player% and %message%
+format: "<%player%> %message%"
