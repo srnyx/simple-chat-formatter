@@ -11,6 +11,7 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
     @NotNull public String format = "<%player_name%> %message%";
 
     public SimpleChatFormatter() {
+        options.bStatsId = 18617;
         options.commandsToRegister.add(new ChatreloadCmd(this));
         options.listenersToRegister.add(new ChatListener(this));
         options.updatePlatforms.add(PluginPlatform.modrinth("simple-chat-formatter"));
