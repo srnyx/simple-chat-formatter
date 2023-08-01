@@ -1,11 +1,12 @@
 name: ${name}
-description: A very simple plugin to format your chat!
+description: ${description}
 authors:
   - srnyx
 website: https://srnyx.com
 
-main: xyz.srnyx.simplechatformatter.SimpleChatFormatter
+main: ${group}.simplechatformatter.SimpleChatFormatter
 version: ${version}
+api-version: 1.13
 
 softdepend:
   - PlaceholderAPI

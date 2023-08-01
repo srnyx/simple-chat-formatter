@@ -1,10 +1,12 @@
-package xyz.srnyx.simplechatformatter;
+package xyz.srnyx.simplechatformatter.commands;
 
 import org.jetbrains.annotations.NotNull;
 
-import xyz.srnyx.annoyingapi.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
+import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
+
+import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
 public class ChatreloadCmd implements AnnoyingCommand {
@@ -15,7 +17,7 @@ public class ChatreloadCmd implements AnnoyingCommand {
     }
 
     @Override @NotNull
-    public SimpleChatFormatter getPlugin() {
+    public SimpleChatFormatter getAnnoyingPlugin() {
         return plugin;
     }
 

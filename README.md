@@ -2,13 +2,15 @@
 
 An extremely simple chat formatter for Spigot servers. Supports PlaceholderAPI and formatting codes.
 
-- **🐛 Bugs / 💡 Suggestions:** Please [open an issue](https://github.com/srnyx/simple-chat-formatter/issues/new/choose) to report a bug or suggest an idea
-- **🆘 Support:** Please [join the Discord](https://srnyx.com/discord) to get support
+**🐛 Bugs / 💡 Suggestions:** Please [open an issue](https://github.com/srnyx/simple-chat-formatter/issues/new/choose) to report a bug or suggest an idea
+
+**🆘 Support:** Please [join the Discord](https://srnyx.com/discord) to get support
 
 ## Download
 
-- **✅ Stable:** You can download the latest **stable** version at [Modrinth](https://modrinth.com/plugin/simple-chat-formatter), [Hangar](https://hangar.papermc.io/srnyx/SimpleChatFormatter), [Polymart](https://polymart.org/resource/####), [Spigot](https://spigotmc.org/resources/######), [BuiltByBit](https://builtbybit.com/resources/29077), or [Bukkit](https://dev.bukkit.org/projects/simple-chat-formatter)
-- **🚧 Snapshot:** You can download the latest **snapshot** version at [actions/workflows/build.yml](https://github.com/srnyx/simple-chat-formatter/actions/workflows/build.yml)
+**✅ Stable:** You can download the latest **stable** version at [Modrinth](https://modrinth.com/plugin/simple-chat-formatter), [Hangar](https://hangar.papermc.io/srnyx/SimpleChatFormatter), [Spigot](https://spigotmc.org/resources/######), [Bukkit](https://dev.bukkit.org/projects/simple-chat-formatter), or [GitHub](https://github.com/srnyx/simple-chat-formatter/releases)
+
+**🚧 Snapshot:** You can download the latest **snapshot** version at [actions/workflows/build.yml](https://github.com/srnyx/simple-chat-formatter/actions/workflows/build.yml)
 
 # Wiki
 

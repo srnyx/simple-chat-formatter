@@ -1,4 +1,4 @@
-package xyz.srnyx.simplechatformatter;
+package xyz.srnyx.simplechatformatter.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -9,7 +9,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.annoyingapi.AnnoyingListener;
-import xyz.srnyx.annoyingapi.utility.AnnoyingUtility;
+import xyz.srnyx.annoyingapi.AnnoyingPlugin;
+import xyz.srnyx.annoyingapi.utility.BukkitUtility;
+
+import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 import java.util.UnknownFormatConversionException;
 import java.util.logging.Level;
@@ -23,7 +26,7 @@ public class ChatListener implements AnnoyingListener {
     }
 
     @Override @NotNull
-    public SimpleChatFormatter getPlugin() {
+    public SimpleChatFormatter getAnnoyingPlugin() {
         return plugin;
     }
 
@@ -31,21 +34,19 @@ public class ChatListener implements AnnoyingListener {
     public void onAsyncPlayerChat(@NotNull AsyncPlayerChatEvent event) {
         final Player player = event.getPlayer();
 
-        // Set message
-        String message = event.getMessage();
-        if (player.hasPermission("chat.format")) message = AnnoyingUtility.color(message);
-        event.setMessage(message);
+        // Format message
+        if (player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
 
         // Set format
         String format = plugin.format;
         if (plugin.papiInstalled) format = PlaceholderAPI.setPlaceholders(player, format);
-        format = AnnoyingUtility.color(format);
+        format = BukkitUtility.color(format);
         try {
             event.setFormat(format
                     .replace("%player%", "%1$s")
                     .replace("%message%", "%2$s"));
         } catch (final UnknownFormatConversionException e) {
-            plugin.log(Level.WARNING, "Formatting error! Look for any unparsed placeholders (except %player% and %message%): " + format);
+            AnnoyingPlugin.log(Level.WARNING, "Formatting error! Look for any unparsed placeholders (except %player% and %message%): " + format);
         }
     }
 }
