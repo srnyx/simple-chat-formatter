@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.annoyingapi.AnnoyingListener;
@@ -15,7 +16,6 @@ import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.utility.BukkitUtility;
 
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
-import xyz.srnyx.simplechatformatter.SimpleSimilarity;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -49,7 +49,7 @@ public class ChatListener implements AnnoyingListener {
             if (!playerMessages.isEmpty()) {
                 // Similarity
                 if (plugin.config.spamSimilarityEnabled) {
-                    final double similarity = SimpleSimilarity.apply(playerMessages.get(playerMessages.size() - 1).message, messageLower);
+                    final double similarity = playerMessages.get(playerMessages.size() - 1).similarity(messageLower);
                     if (similarity >= plugin.config.spamSimilarityPercent) {
                         event.setCancelled(true);
                         new AnnoyingMessage(plugin, "spam.similarity")
@@ -121,9 +121,63 @@ public class ChatListener implements AnnoyingListener {
         @NotNull private final String message;
         private final long time;
 
-        public TimedMessage(@NotNull String message) {
+        private TimedMessage(@NotNull String message) {
             this.message = message;
             this.time = System.currentTimeMillis();
+        }
+
+        private double similarity(@NotNull String other) {
+            if (message.equals(other)) return 1.0;
+            final int[] mtp = matches(other);
+            final double m = mtp[0];
+            if (m == 0) return 0d;
+            final double j = (m / message.length() + m / other.length() + (m - (double) mtp[1] / 2) / m) / 3;
+            return j < 0.7d ? j : j + 0.1 * mtp[2] * (1d - j);
+        }
+
+        @Contract("_ -> new")
+        private int[] matches(@NotNull String other) {
+            final CharSequence max;
+            final CharSequence min;
+            if (message.length() > other.length()) {
+                max = message;
+                min = other;
+            } else {
+                max = other;
+                min = message;
+            }
+            final int range = Math.max(max.length() / 2 - 1, 0);
+            final int[] matchIndexes = new int[min.length()];
+            Arrays.fill(matchIndexes, -1);
+            final boolean[] matchFlags = new boolean[max.length()];
+            int matches = 0;
+            for (int mi = 0; mi < min.length(); mi++) {
+                final char c1 = min.charAt(mi);
+                for (int xi = Math.max(mi - range, 0), xn = Math.min(mi + range + 1, max.length()); xi < xn; xi++) if (!matchFlags[xi] && c1 == max.charAt(xi)) {
+                    matchIndexes[mi] = xi;
+                    matchFlags[xi] = true;
+                    matches++;
+                    break;
+                }
+            }
+            final char[] ms1 = new char[matches];
+            final char[] ms2 = new char[matches];
+            for (int i = 0, si = 0; i < min.length(); i++) if (matchIndexes[i] != -1) {
+                ms1[si] = min.charAt(i);
+                si++;
+            }
+            for (int i = 0, si = 0; i < max.length(); i++) if (matchFlags[i]) {
+                ms2[si] = max.charAt(i);
+                si++;
+            }
+            int halfTranspositions = 0;
+            for (int mi = 0; mi < ms1.length; mi++) if (ms1[mi] != ms2[mi]) halfTranspositions++;
+            int prefix = 0;
+            for (int mi = 0; mi < Math.min(4, min.length()); mi++) {
+                if (message.charAt(mi) != other.charAt(mi)) break;
+                prefix++;
+            }
+            return new int[]{matches, halfTranspositions, prefix};
         }
     }
 }
