@@ -39,5 +39,9 @@ error:
 
 reload: "%prefix%Plugin successfully reloaded!@@%p%%command%@@%command%"
 
+spam: # %message%
+  speed: "%pe%You're sending messages too quickly!@@%pe%%message%@@%message%"
+  similarity: "%pe%Your message is too similar to your previous message (%se%%similarity%%%pe%)!@@%pe%%message%@@%message%" # %similarity%
+
 # The message sent when they try to send a message that contains a filtered word (and the mode is set to delete)
 delete: "%pe%Your message contained a filtered word (%se%%word%%pe%)!@@%pe%%message%@@%message%" # %word%, %message%

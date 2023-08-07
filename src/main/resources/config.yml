@@ -6,6 +6,24 @@ format: "<%player%> %message%"
 # This may break other chat plugins, if you need it to not break them, let me know here: https://github.com/srnyx/simple-chat-formatter/issues/new/choose
 disable-chat-reporting: false
 
+# A simple chat spam filter with a few different modes
+# If a player has the chat.spam.bypass permission, they won't be affected by the filter
+spam:
+  speed:
+    # Whether to filter messages sent too quickly
+    enabled: false
+    # The amount of messages that can be sent in the spam.time before the player's messages are deleted
+    messages: 2
+    # The amount of seconds that the player has to send spam.messages messages before their messages are deleted
+    time: 1 # seconds
+
+  similarity:
+    # Whether to filter messages that are too similar to the previous message
+    enabled: false
+    # How similar a message has to be to the previous message to be considered spam
+    # 0-100, 0 being not similar at all, 100 being exactly the same
+    percent: 75
+
 # A simple chat/word filter with a few different modes (to disable, set filter.list to [])
 # If a player has the chat.filter.bypass permission, they won't be affected by the filter
 filter:

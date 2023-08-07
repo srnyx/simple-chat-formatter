@@ -11,16 +11,19 @@ import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.annoyingapi.AnnoyingListener;
 import xyz.srnyx.annoyingapi.AnnoyingPlugin;
+import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.utility.BukkitUtility;
 
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
+import xyz.srnyx.simplechatformatter.SimpleSimilarity;
 
-import java.util.UnknownFormatConversionException;
+import java.util.*;
 import java.util.logging.Level;
 
 
 public class ChatListener implements AnnoyingListener {
     @NotNull private final SimpleChatFormatter plugin;
+    @NotNull private final Map<UUID, List<TimedMessage>> messages = new HashMap<>();
 
     public ChatListener(@NotNull SimpleChatFormatter plugin) {
         this.plugin = plugin;
@@ -37,6 +40,42 @@ public class ChatListener implements AnnoyingListener {
 
         // Format message
         if (player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
+
+        // Spam
+        if ((plugin.config.spamSpeedEnabled || plugin.config.spamSimilarityEnabled) && !player.hasPermission("chat.spam.bypass")) {
+            final String message = event.getMessage();
+            final String messageLower = message.toLowerCase();
+            final List<TimedMessage> playerMessages = this.messages.computeIfAbsent(player.getUniqueId(), uuid -> new ArrayList<>());
+            if (!playerMessages.isEmpty()) {
+                // Similarity
+                if (plugin.config.spamSimilarityEnabled) {
+                    final double similarity = SimpleSimilarity.apply(playerMessages.get(playerMessages.size() - 1).message, messageLower);
+                    if (similarity >= plugin.config.spamSimilarityPercent) {
+                        event.setCancelled(true);
+                        new AnnoyingMessage(plugin, "spam.similarity")
+                                .replace("%similarity%", (int) Math.abs(similarity * 100))
+                                .replace("%message%", message)
+                                .send(player);
+                        return;
+                    }
+                }
+
+                // Speed
+                if (plugin.config.spamSpeedEnabled) {
+                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spamSpeedTime);
+                    if (playerMessages.size() + 1 > plugin.config.spamSpeedMessages) {
+                        event.setCancelled(true);
+                        new AnnoyingMessage(plugin, "spam.speed")
+                                .replace("%message%", message)
+                                .send(player);
+                        return;
+                    }
+                } else {
+                    playerMessages.clear();
+                }
+            }
+            playerMessages.add(new TimedMessage(messageLower));
+        }
 
         // Set format
         String format = plugin.config.format;
@@ -75,6 +114,16 @@ public class ChatListener implements AnnoyingListener {
             this.event = event;
             this.plugin = plugin;
             this.format = format;
+        }
+    }
+
+    private static class TimedMessage {
+        @NotNull private final String message;
+        private final long time;
+
+        public TimedMessage(@NotNull String message) {
+            this.message = message;
+            this.time = System.currentTimeMillis();
         }
     }
 }
