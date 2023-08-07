@@ -38,3 +38,6 @@ error:
   disabled-command: "%prefix%%se%%command%%pe% is disabled!@@%pe%%command%@@%command%"
 
 reload: "%prefix%Plugin successfully reloaded!@@%p%%command%@@%command%"
+
+# The message sent when they try to send a message that contains a filtered word (and the mode is set to delete)
+delete: "%pe%Your message contained a filtered word (%se%%word%%pe%)!@@%pe%%message%@@%message%" # %word%, %message%

@@ -1,12 +1,13 @@
 package xyz.srnyx.simplechatformatter;
 
+import org.jetbrains.annotations.NotNull;
+
 import xyz.srnyx.annoyingapi.AnnoyingPlugin;
 import xyz.srnyx.annoyingapi.PluginPlatform;
-import xyz.srnyx.annoyingapi.file.AnnoyingResource;
 
 
 public class SimpleChatFormatter extends AnnoyingPlugin {
-    public String format;
+    @NotNull public SimpleConfig config = new SimpleConfig(this);
 
     public SimpleChatFormatter() {
         options
@@ -18,12 +19,10 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
                 .registrationOptions.automaticRegistration.packages(
                         "xyz.srnyx.simplechatformatter.commands",
                         "xyz.srnyx.simplechatformatter.listeners");
-
-        reload();
     }
 
     @Override
     public void reload() {
-        format = new AnnoyingResource(this, "config.yml").getString("format", "<%player_name%> %message%");
+        config = new SimpleConfig(this);
     }
 }

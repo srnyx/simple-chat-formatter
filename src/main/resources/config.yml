@@ -1,3 +1,28 @@
 # PlaceholderAPI placeholders and formatting codes are supported
 # The only default placeholders are %player% and %message%
 format: "<%player%> %message%"
+
+# 1.19.1+ Remove the ability for people to report other player's messages
+# This may break other chat plugins, if you need it to not break them, let me know here: https://github.com/srnyx/simple-chat-formatter/issues/new/choose
+disable-chat-reporting: false
+
+# A simple chat/word filter with a few different modes (to disable, set filter.list to [])
+# If a player has the chat.filter.bypass permission, they won't be affected by the filter
+filter:
+  # The mode that the filter will use
+  # delete: Deletes/hides the message for everyone, sending an error (delete in messages.yml) to the player
+  # shadow: Deletes/hides the message for everyone except the player
+  # censor: Replaces the filtered words' letters with the filter.censor-replacement value
+  mode: delete
+
+  # The replacement to use for each filtered word letter when filter.mode is set to censor
+  # This can only be one character, if it isn't, it'll only use the first character
+  censor-replacement: "#"
+
+  # The list of words that will be filtered (case-insensitive, alphanumeric only)
+  # Set to [] to disable the filter, as shown below
+  # list: []
+  list:
+    - badword1
+    - badword2
+    - badword3

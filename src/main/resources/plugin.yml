@@ -24,3 +24,7 @@ permissions:
     description: Allows the player to use /chatreload
   chat.format:
     description: Allows the player to use formatting codes
+  chat.filter.bypass:
+    description: Allows the player to bypass the chat filter
+  chat.filter.see:
+    description: Allows the player to see shadowed messages
