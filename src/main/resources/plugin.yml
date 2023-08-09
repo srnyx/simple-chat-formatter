@@ -29,4 +29,4 @@ permissions:
   chat.filter.bypass:
     description: Allows the player to bypass the chat filter
   chat.filter.see:
-    description: Allows the player to see shadowed messages
+    description: Allows the player to see filtered messages
