@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 
@@ -56,7 +57,7 @@ public enum FilterMode {
 
         // Send censored message
         final StringBuilder censorBuilder = new StringBuilder(data.event.getMessage());
-        final char replacement = data.plugin.config.filterCensorReplacement.charAt(0);
+        final char replacement = data.plugin.config.filter.censorReplacement.charAt(0);
         for (final String word : filteredWords) {
             final int start = censorBuilder.indexOf(word);
             final int end = start + word.length();
@@ -90,7 +91,8 @@ public enum FilterMode {
     }
 
     @NotNull
-    public static FilterMode match(@NotNull String string) {
+    public static FilterMode match(@Nullable String string) {
+        if (string == null) return DELETE;
         try {
             return valueOf(string.toUpperCase());
         } catch (final IllegalArgumentException exception) {
@@ -100,7 +102,7 @@ public enum FilterMode {
 
     @NotNull
     private static List<String> getFilteredWords(@NotNull ChatListener.ChatEventData data) {
-        final Set<String> filterList = data.plugin.config.filterList;
+        final Set<String> filterList = data.plugin.config.filter.list;
         return Arrays.stream(data.event.getMessage().toLowerCase().replaceAll("[^ a-z0-9]", "").split(" "))
                 .filter(filterList::contains)
                 .collect(Collectors.toList());

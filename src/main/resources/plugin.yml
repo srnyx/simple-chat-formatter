@@ -10,6 +10,7 @@ api-version: 1.13
 
 softdepend:
   - PlaceholderAPI
+  - DiscordSRV
 
 commands:
   chatreload:
@@ -18,10 +19,26 @@ commands:
       - cr
       - scfreload
     permission: chat.reload
+  broadcast:
+    description: Broadcasts a message to the entire server
+    aliases:
+      - bc
+    permission: chat.broadcast
+  clearchat:
+    description: Clears the chat
+    aliases:
+      - cc
+    permission: chat.clear
 
 permissions:
   chat.reload:
     description: Allows the player to use /chatreload
+  chat.broadcast:
+    description: Allows the player to use /broadcast
+  chat.clear:
+    description: Allows the player to use /clearchat
+  chat.clear.bypass:
+    description: Allows the player to bypass the chat clear
   chat.format:
     description: Allows the player to use formatting codes
   chat.spam.bypass:

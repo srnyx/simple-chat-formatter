@@ -39,6 +39,15 @@ error:
 
 reload: "%prefix%Plugin successfully reloaded!@@%p%%command%@@%command%"
 
+clear: "%prefix%Chat has been cleared by %se%%player%%p%!" # %player%
+
+broadcast: # %player%, %message%
+  chat: "\n&8[&4&l%player%&8] &c%message%\n"
+  title:
+    title: "&4&l%player%"
+    subtitle: "&c%message%"
+  discord: "**BROADCAST from `%player%`**\n> %message%"
+
 spam: # %message%
   speed: "%pe%You're sending messages too quickly!@@%pe%%message%@@%message%"
   similarity: "%pe%Your message is too similar to your previous message (%se%%similarity%%%pe%)!@@%pe%%message%@@%message%" # %similarity%

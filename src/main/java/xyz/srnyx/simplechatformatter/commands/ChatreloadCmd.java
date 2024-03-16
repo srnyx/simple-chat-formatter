@@ -9,7 +9,7 @@ import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
-public class ChatreloadCmd implements AnnoyingCommand {
+public class ChatreloadCmd extends AnnoyingCommand {
     @NotNull private final SimpleChatFormatter plugin;
 
     public ChatreloadCmd(@NotNull SimpleChatFormatter plugin) {

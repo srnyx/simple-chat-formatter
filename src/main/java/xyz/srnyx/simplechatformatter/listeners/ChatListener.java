@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 
-public class ChatListener implements AnnoyingListener {
+public class ChatListener extends AnnoyingListener {
     @NotNull private final SimpleChatFormatter plugin;
     @NotNull private final Map<UUID, List<TimedMessage>> messages = new HashMap<>();
 
@@ -39,18 +39,18 @@ public class ChatListener implements AnnoyingListener {
         final Player player = event.getPlayer();
 
         // Format message
-        if (player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
+        if (plugin.config.enableFormat && player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
 
         // Spam
-        if ((plugin.config.spamSpeedEnabled || plugin.config.spamSimilarityEnabled) && !player.hasPermission("chat.spam.bypass")) {
+        if ((plugin.config.spam.speed != null || plugin.config.spam.similarity != null) && !player.hasPermission("chat.spam.bypass")) {
             final String message = event.getMessage();
             final String messageLower = message.toLowerCase();
             final List<TimedMessage> playerMessages = this.messages.computeIfAbsent(player.getUniqueId(), uuid -> new ArrayList<>());
             if (!playerMessages.isEmpty()) {
                 // Similarity
-                if (plugin.config.spamSimilarityEnabled) {
+                if (plugin.config.spam.similarity != null) {
                     final double similarity = playerMessages.get(playerMessages.size() - 1).similarity(messageLower);
-                    if (similarity >= plugin.config.spamSimilarityPercent) {
+                    if (similarity >= plugin.config.spam.similarity.percent) {
                         event.setCancelled(true);
                         new AnnoyingMessage(plugin, "spam.similarity")
                                 .replace("%similarity%", (int) Math.abs(similarity * 100))
@@ -61,9 +61,9 @@ public class ChatListener implements AnnoyingListener {
                 }
 
                 // Speed
-                if (plugin.config.spamSpeedEnabled) {
-                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spamSpeedTime);
-                    if (playerMessages.size() + 1 > plugin.config.spamSpeedMessages) {
+                if (plugin.config.spam.speed != null) {
+                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spam.speed.time);
+                    if (playerMessages.size() + 1 > plugin.config.spam.speed.messages) {
                         event.setCancelled(true);
                         new AnnoyingMessage(plugin, "spam.speed")
                                 .replace("%message%", message)
@@ -77,13 +77,16 @@ public class ChatListener implements AnnoyingListener {
             playerMessages.add(new TimedMessage(messageLower));
         }
 
+        // Check if format is enabled
+        if (!plugin.config.enableFormat) return;
+
         // Set format
         String format = plugin.config.format;
         if (plugin.papiInstalled) format = PlaceholderAPI.setPlaceholders(player, format);
         format = BukkitUtility.color(format);
 
         // Filter message
-        if (!plugin.config.filterList.isEmpty() && !player.hasPermission("chat.filter.bypass") && Boolean.FALSE.equals(plugin.config.filterMode.function.apply(new ChatEventData(event, plugin, format)))) return;
+        if (plugin.config.filter.mode != null && !player.hasPermission("chat.filter.bypass") && Boolean.FALSE.equals(plugin.config.filter.mode.function.apply(new ChatEventData(event, plugin, format)))) return;
 
         // Disable chat reporting
         if (plugin.config.disableChatReporting) {
