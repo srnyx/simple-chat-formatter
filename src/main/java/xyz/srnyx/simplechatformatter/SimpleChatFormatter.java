@@ -32,6 +32,6 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
     @Override
     public void reload() {
         config = new SimpleConfig(this);
-        discordBroadcast = config.broadcast.discord.enabled && Bukkit.getPluginManager().isPluginEnabled("DiscordSRV") ? new DiscordBroadcast(this) : null;
+        discordBroadcast = config.broadcast.discordChannel != null && Bukkit.getPluginManager().isPluginEnabled("DiscordSRV") ? new DiscordBroadcast(this) : null;
     }
 }

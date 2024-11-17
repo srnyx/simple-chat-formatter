@@ -19,7 +19,7 @@ public class DiscordBroadcast {
     }
 
     public void broadcast(@NotNull AnnoyingSender sender, @NotNull String message) {
-        final TextChannel channel = discordSRV.getDestinationTextChannelForGameChannelName(plugin.config.broadcast.discord.channel);
+        final TextChannel channel = discordSRV.getDestinationTextChannelForGameChannelName(plugin.config.broadcast.discordChannel);
         if (channel != null) DiscordUtil.sendMessage(channel, new AnnoyingMessage(plugin, "broadcast.discord")
                 .replace("%message%", message)
                 .replace("%player%", sender.cmdSender.getName())

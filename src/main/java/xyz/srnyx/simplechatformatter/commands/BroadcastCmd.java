@@ -62,10 +62,10 @@ public class BroadcastCmd extends AnnoyingCommand {
 
         // Title
         final SimpleConfig.Broadcast.Title title = plugin.config.broadcast.title;
-        if (!title.enabled) return;
+        if (title == null) return;
 
         // No typing (one-time)
-        if (!title.typing.enabled) {
+        if (title.typing == null) {
             new AnnoyingMessage(plugin, "broadcast.title")
                     .replace("%player%", name)
                     .replace("%message%", message)

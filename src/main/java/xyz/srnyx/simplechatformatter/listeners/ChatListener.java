@@ -42,15 +42,15 @@ public class ChatListener extends AnnoyingListener {
         if (plugin.config.enableFormat && player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
 
         // Spam
-        if ((plugin.config.spam.speed != null || plugin.config.spam.similarity != null) && !player.hasPermission("chat.spam.bypass")) {
+        if ((plugin.config.spam.speed != null || plugin.config.spam.similarityPercent != null) && !player.hasPermission("chat.spam.bypass")) {
             final String message = event.getMessage();
             final String messageLower = message.toLowerCase();
             final List<TimedMessage> playerMessages = this.messages.computeIfAbsent(player.getUniqueId(), uuid -> new ArrayList<>());
             if (!playerMessages.isEmpty()) {
                 // Similarity
-                if (plugin.config.spam.similarity != null) {
+                if (plugin.config.spam.similarityPercent != null) {
                     final double similarity = playerMessages.get(playerMessages.size() - 1).similarity(messageLower);
-                    if (similarity >= plugin.config.spam.similarity.percent) {
+                    if (similarity >= plugin.config.spam.similarityPercent) {
                         event.setCancelled(true);
                         new AnnoyingMessage(plugin, "spam.similarity")
                                 .replace("%similarity%", (int) Math.abs(similarity * 100))
