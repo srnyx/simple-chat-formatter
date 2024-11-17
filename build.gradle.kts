@@ -6,8 +6,8 @@ import xyz.srnyx.gradlegalaxy.utility.spigotAPI
 
 plugins {
     java
-    id("xyz.srnyx.gradle-galaxy") version "1.1.2"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("xyz.srnyx.gradle-galaxy") version "1.3.2"
+    id("com.gradleup.shadow") version "8.3.5"
 }
 
 setupAnnoyingAPI("a7ca4162e8", "xyz.srnyx", "1.1.0", "A very simple plugin to format your chat!")
