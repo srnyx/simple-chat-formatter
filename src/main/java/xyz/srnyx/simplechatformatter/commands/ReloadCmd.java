@@ -9,16 +9,21 @@ import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
-public class ChatreloadCmd extends AnnoyingCommand {
+public class ReloadCmd extends AnnoyingCommand {
     @NotNull private final SimpleChatFormatter plugin;
 
-    public ChatreloadCmd(@NotNull SimpleChatFormatter plugin) {
+    public ReloadCmd(@NotNull SimpleChatFormatter plugin) {
         this.plugin = plugin;
     }
 
     @Override @NotNull
     public SimpleChatFormatter getAnnoyingPlugin() {
         return plugin;
+    }
+
+    @Override @NotNull
+    public String getName() {
+        return "chatreload";
     }
 
     @Override @NotNull
