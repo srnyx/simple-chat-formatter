@@ -39,7 +39,7 @@ error:
 
 reload: "%prefix%Plugin successfully reloaded!@@%p%%command%@@%command%"
 
-clear: "%prefix%Chat has been cleared by %se%%player%%p%!" # %player%
+clear: "%prefix%Chat has been cleared by %s%%player%%p%!" # %player%
 
 broadcast: # %player%, %message%
   chat: "\n&8[&4&l%player%&8] &c%message%\n"
