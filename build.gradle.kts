@@ -10,7 +10,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
 }
 
-setupAnnoyingAPI("5.1.3", "xyz.srnyx", "1.1.0", "A very simple plugin to format your chat!")
+setupAnnoyingAPI("5.1.3", "xyz.srnyx", "1.2.0", "A very simple plugin to format your chat!")
 spigotAPI("1.8.8")
 
 repository(Repository.PLACEHOLDER_API, Repository.DV8TION, Repository.SCARSZ)
