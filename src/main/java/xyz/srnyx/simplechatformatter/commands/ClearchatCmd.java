@@ -1,6 +1,7 @@
 package xyz.srnyx.simplechatformatter.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +33,7 @@ public class ClearchatCmd extends AnnoyingCommand {
 
     @Override
     public void onCommand(@NotNull AnnoyingSender sender) {
-        Bukkit.getOnlinePlayers().stream()
-                .filter(player -> !player.hasPermission("chat.clear.bypass"))
-                .forEach(player -> {
-                    for (int i = 0; i < 100; i++) player.sendMessage("");
-                });
+        for (final Player player : Bukkit.getOnlinePlayers()) if (!player.hasPermission("chat.clear.bypass")) for (int i = 0; i < 100; i++) player.sendMessage("");
         new AnnoyingMessage(plugin, "clear")
                 .replace("%player%", sender.cmdSender.getName())
                 .broadcast(BroadcastType.CHAT, sender);
