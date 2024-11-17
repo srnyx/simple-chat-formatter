@@ -21,7 +21,7 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
                 .bStatsOptions(bStatsOptions -> bStatsOptions.id(18617))
                 .registrationOptions.automaticRegistration.packages(
                         "xyz.srnyx.simplechatformatter.commands",
-                        ".xyz.srnyx.simplechatformatter.listeners");
+                        "xyz.srnyx.simplechatformatter.listeners");
     }
 
     @Override
