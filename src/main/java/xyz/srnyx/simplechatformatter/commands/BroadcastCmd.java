@@ -47,8 +47,9 @@ public class BroadcastCmd extends AnnoyingCommand {
 
     @Override
     public void onCommand(@NotNull AnnoyingSender sender) {
+        if (sender.args == null) return;
         final String name = sender.cmdSender.getName();
-        final String message = BukkitUtility.color(String.join(" ", sender.args));
+        final String message = BukkitUtility.color(sender.getArgumentsJoined());
 
         // Chat message
         new AnnoyingMessage(plugin, "broadcast.chat")

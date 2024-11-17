@@ -15,8 +15,8 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
     public SimpleChatFormatter() {
         options
                 .pluginOptions(pluginOptions -> pluginOptions.updatePlatforms(
-                        PluginPlatform.modrinth("simple-chat-formatter"),
-                        PluginPlatform.hangar(this, "srnyx"),
+                        PluginPlatform.modrinth("h3dHO3Sr"),
+                        PluginPlatform.hangar(this),
                         PluginPlatform.spigot("111804")))
                 .bStatsOptions(bStatsOptions -> bStatsOptions.id(18617))
                 .registrationOptions.automaticRegistration.packages(

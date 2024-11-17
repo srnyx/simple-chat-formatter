@@ -43,12 +43,9 @@ public class SimpleConfig {
             public class Typing {
                 public final boolean enabled = config.getBoolean("broadcast.title.typing.enabled", true);
                 public final int delay = config.getInt("broadcast.title.typing.delay", 2);
-                @Nullable public final PlayableSound sound;
-
-                public Typing() {
-                    final PlayableSound newSound = config.getPlayableSound("broadcast.title.typing.sound");
-                    sound = newSound != null && newSound.volume > 0 ? newSound : null;
-                }
+                @Nullable public final PlayableSound sound = config.getPlayableSound("broadcast.title.typing.sound")
+                        .filter(sound -> sound.volume > 0)
+                        .orElse(null);
             }
         }
 
