@@ -6,7 +6,7 @@ DOCUMENTATION: https://annoying-api.srnyx.com/wiki/File-objects
 enable-format: true
 # PlaceholderAPI placeholders and formatting codes are supported
 # The only default placeholders are %player% and %message%
-format: "<%player%> %message%"
+format: "&a%player% &8>&r %message%"
 
 # 1.19.1+ Remove the ability for people to report other player's messages
 # This may break other chat plugins, if you need it to not break them, let me know here: https://github.com/srnyx/simple-chat-formatter/issues/new/choose

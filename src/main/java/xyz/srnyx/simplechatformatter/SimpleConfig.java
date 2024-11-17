@@ -22,7 +22,7 @@ public class SimpleConfig {
     public SimpleConfig(@NotNull SimpleChatFormatter plugin) {
         config = new AnnoyingResource(plugin, "config.yml");
         enableFormat = config.getBoolean("enable-format", true);
-        format = config.getString("format", "<%player_name%> %message%");
+        format = config.getString("format", "&a%player% &8>&r %message%");
         disableChatReporting = config.getBoolean("disable-chat-reporting", false);
         broadcast = new Broadcast();
         spam = new Spam();
