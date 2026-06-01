@@ -1,21 +1,19 @@
 package xyz.srnyx.simplechatformatter.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
 import xyz.srnyx.annoyingapi.AnnoyingListener;
 import xyz.srnyx.annoyingapi.AnnoyingPlugin;
+import xyz.srnyx.annoyingapi.data.EntityData;
 import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.utility.BukkitUtility;
-
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
+import xyz.srnyx.simplechatformatter.commands.BroadcastToggleCmd;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -75,6 +73,15 @@ public class ChatListener extends AnnoyingListener {
                 }
             }
             playerMessages.add(new TimedMessage(messageLower));
+        }
+
+        // Chat broadcast toggle
+        if (new EntityData(plugin, player).has(BroadcastToggleCmd.KEY)) {
+            plugin.broadcaster.broadcast(player, event.getMessage());
+
+            // Don't send double message in chat
+            event.setCancelled(true);
+            return;
         }
 
         // Check if format is enabled

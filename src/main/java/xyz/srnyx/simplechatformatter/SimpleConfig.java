@@ -2,7 +2,6 @@ package xyz.srnyx.simplechatformatter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import xyz.srnyx.annoyingapi.file.AnnoyingResource;
 import xyz.srnyx.annoyingapi.file.PlayableSound;
 
@@ -41,9 +40,17 @@ public class SimpleConfig {
 
             public class Typing {
                 public final int delay = config.getInt("broadcast.title.typing.delay", 2);
+                @Nullable public final Integer maxTime;
                 @Nullable public final PlayableSound sound = config.getPlayableSound("broadcast.title.typing.sound")
                         .filter(sound -> sound.volume > 0)
                         .orElse(null);
+
+                public Typing() {
+                    // maxTime
+                    Integer newMaxTime = config.getInt("broadcast.title.typing.max-time");
+                    if (newMaxTime == 0) newMaxTime = null;
+                    maxTime = newMaxTime;
+                }
             }
         }
     }

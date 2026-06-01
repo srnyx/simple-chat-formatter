@@ -1,20 +1,19 @@
-package xyz.srnyx.simplechatformatter;
+package xyz.srnyx.simplechatformatter.broadcast;
 
 import github.scarsz.discordsrv.DiscordSRV;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
-
 import org.jetbrains.annotations.NotNull;
-
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
 import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
+import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
-public class DiscordBroadcast {
+public class DiscordBroadcaster {
     @NotNull private final SimpleChatFormatter plugin;
     @NotNull private final DiscordSRV discordSRV = DiscordSRV.getPlugin();
 
-    public DiscordBroadcast(@NotNull SimpleChatFormatter plugin) {
+    public DiscordBroadcaster(@NotNull SimpleChatFormatter plugin) {
         this.plugin = plugin;
     }
 

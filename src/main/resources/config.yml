@@ -30,6 +30,9 @@ broadcast:
       enabled: true
       # The delay (in ticks [20 ticks = 1 second]) between each letter being typed out
       delay: 2
+      # The maximum time (in ticks) the broadcast will be typed out for
+      # So if length * delay > max-time, the delay will be automatically reduced until it fits
+      max-time: 60
       # Set volume to 0 to disable
       sound: # SOUND (see docs)
         sound: UI_BUTTON_CLICK

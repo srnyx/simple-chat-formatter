@@ -24,6 +24,11 @@ commands:
     aliases:
       - bc
     permission: chat.broadcast
+  broadcasttoggle:
+    description: Toggles all messages being broadcasted
+    aliases:
+      - bctoggle
+    permission: chat.broadcast.toggle
   clearchat:
     description: Clears the chat
     aliases:
@@ -35,6 +40,10 @@ permissions:
     description: Allows the player to use /chatreload
   chat.broadcast:
     description: Allows the player to use /broadcast
+  chat.broadcast.toggle:
+    description: Allows the player to use /broadcasttoggle
+  chat.broadcast.toggle.other:
+    description: Allows the player to use /broadcasttoggle on others
   chat.clear:
     description: Allows the player to use /clearchat
   chat.clear.bypass:

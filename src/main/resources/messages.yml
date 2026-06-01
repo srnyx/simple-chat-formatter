@@ -48,6 +48,10 @@ broadcast: # %player%, %message%
     subtitle: "&c%message%"
   discord: "**BROADCAST from `%player%`**\n> %message%"
 
+  toggle:
+    toggler: "%prefix%Chat broadcasting has been %s%%state==enabled//disabled%%p% for %s%%target%%p%" # %toggler%, %target%, %state==boolean%
+    target: "%prefix%%s%%toggler%%p% has %s%%state==enabled//disabled%%p% chat broadcasting for you" # %toggler%, %target%, %state==boolean%
+
 spam: # %message%
   speed: "%pe%You're sending messages too quickly!@@%pe%%message%@@%message%"
   similarity: "%pe%Your message is too similar to your previous message (%se%%similarity%%%pe%)!@@%pe%%message%@@%message%" # %similarity%
