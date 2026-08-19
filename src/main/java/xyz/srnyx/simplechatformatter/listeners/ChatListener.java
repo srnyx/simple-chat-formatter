@@ -45,13 +45,26 @@ public class ChatListener extends AnnoyingListener {
             final String messageLower = message.toLowerCase();
             final List<TimedMessage> playerMessages = this.messages.computeIfAbsent(player.getUniqueId(), uuid -> new ArrayList<>());
             if (!playerMessages.isEmpty()) {
+                final long now = System.currentTimeMillis();
+
+                // Prune messages older than the longest-lived window so neither check compares against stale history
+                final long speedMillis = plugin.config.spam.speed.time.toMillis();
+                final long similarityMillis = plugin.config.spam.similarity.time.toMillis();
+                playerMessages.removeIf(msg -> msg.time < now - Math.max(speedMillis, similarityMillis));
+
                 // Similarity
-                if (plugin.config.spam.similarity.enabled) {
-                    final double similarity = playerMessages.get(playerMessages.size() - 1).similarity(messageLower);
-                    if (similarity >= plugin.config.spam.similarity.getPercent()) {
+                if (plugin.config.spam.similarity.enabled && TimedMessage.normalize(messageLower).length() >= plugin.config.spam.similarity.min_length) {
+                    final long similarityCutoff = now - similarityMillis;
+                    double highestSimilarity = 0d;
+                    for (final TimedMessage previous : playerMessages) {
+                        if (previous.time < similarityCutoff) continue;
+                        final double similarity = previous.similarity(messageLower);
+                        if (similarity > highestSimilarity) highestSimilarity = similarity;
+                    }
+                    if (highestSimilarity >= plugin.config.spam.similarity.getPercent()) {
                         event.setCancelled(true);
                         plugin.getMessages().get().spam.similarity.newMessage()
-                                .replace("%similarity%", (int) Math.abs(similarity * 100))
+                                .replace("%similarity%", (int) Math.abs(highestSimilarity * 100))
                                 .replace("%message%", message)
                                 .send(player);
                         return;
@@ -60,7 +73,8 @@ public class ChatListener extends AnnoyingListener {
 
                 // Speed
                 if (plugin.config.spam.speed.enabled) {
-                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spam.speed.time.toMillis());
+                    final long speedCutoff = now - speedMillis;
+                    playerMessages.removeIf(msg -> msg.time < speedCutoff);
                     if (playerMessages.size() + 1 > plugin.config.spam.speed.messages) {
                         event.setCancelled(true);
                         plugin.getMessages().get().spam.speed.newMessage()

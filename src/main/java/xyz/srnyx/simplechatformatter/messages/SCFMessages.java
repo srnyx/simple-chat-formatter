@@ -78,6 +78,6 @@ public class SCFMessages extends AnnoyingMessages {
 
         @Comment
         @Comment("Placeholders: %message%, %similarity%")
-        @NotNull public JsonChatMessage similarity = getRoot().defaultMessage("%pe%Your message is too similar to your previous message (%se%%similarity%%%pe%)!@@%pe%%message%@@%message%");
+        @NotNull public JsonChatMessage similarity = getRoot().defaultMessage("%pe%Your message is too similar to your previous messages (%se%%similarity%%%pe%)!@@%pe%%message%@@%message%");
     }
 }

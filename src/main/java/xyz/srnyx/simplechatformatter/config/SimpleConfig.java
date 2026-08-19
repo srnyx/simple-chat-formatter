@@ -182,6 +182,15 @@ public class SimpleConfig extends RootConfig {
             @Min(0) @Max(100) @Stat
             public int percent = 80;
 
+            @Comment("The amount of time a previous message is remembered for similarity comparison")
+            @DurationSpec(fallbackUnit = ChronoUnit.SECONDS) @Stat
+            @NotNull public Duration time = Duration.ofSeconds(30);
+
+            @Comment("The minimum normalized message length required before the similarity check applies")
+            @Comment("Helps avoid false positives on short messages like 'ok' or 'gg'")
+            @Min(0) @Stat
+            public int min_length = 4;
+
             public double getPercent() {
                 return percent / 100d;
             }
