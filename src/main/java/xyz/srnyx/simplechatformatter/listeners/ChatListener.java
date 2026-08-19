@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import xyz.srnyx.annoyingapi.AnnoyingListener;
 import xyz.srnyx.annoyingapi.AnnoyingPlugin;
 import xyz.srnyx.annoyingapi.data.EntityData;
-import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.utility.BukkitUtility;
+import xyz.srnyx.simplechatformatter.FilterMode;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 import xyz.srnyx.simplechatformatter.commands.BroadcastToggleCmd;
 
@@ -37,20 +37,20 @@ public class ChatListener extends AnnoyingListener {
         final Player player = event.getPlayer();
 
         // Format message
-        if (plugin.config.enableFormat && player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
+        if (plugin.config.enable_format && player.hasPermission("chat.format")) event.setMessage(BukkitUtility.color(event.getMessage()));
 
         // Spam
-        if ((plugin.config.spam.speed != null || plugin.config.spam.similarityPercent != null) && !player.hasPermission("chat.spam.bypass")) {
+        if ((plugin.config.spam.speed.enabled || plugin.config.spam.similarity.enabled) && !player.hasPermission("chat.spam.bypass")) {
             final String message = event.getMessage();
             final String messageLower = message.toLowerCase();
             final List<TimedMessage> playerMessages = this.messages.computeIfAbsent(player.getUniqueId(), uuid -> new ArrayList<>());
             if (!playerMessages.isEmpty()) {
                 // Similarity
-                if (plugin.config.spam.similarityPercent != null) {
+                if (plugin.config.spam.similarity.enabled) {
                     final double similarity = playerMessages.get(playerMessages.size() - 1).similarity(messageLower);
-                    if (similarity >= plugin.config.spam.similarityPercent) {
+                    if (similarity >= plugin.config.spam.similarity.getPercent()) {
                         event.setCancelled(true);
-                        new AnnoyingMessage(plugin, "spam.similarity")
+                        plugin.getMessages().get().spam.similarity.newMessage()
                                 .replace("%similarity%", (int) Math.abs(similarity * 100))
                                 .replace("%message%", message)
                                 .send(player);
@@ -59,11 +59,11 @@ public class ChatListener extends AnnoyingListener {
                 }
 
                 // Speed
-                if (plugin.config.spam.speed != null) {
-                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spam.speed.time);
+                if (plugin.config.spam.speed.enabled) {
+                    playerMessages.removeIf(msg -> msg.time < System.currentTimeMillis() - plugin.config.spam.speed.time.toMillis());
                     if (playerMessages.size() + 1 > plugin.config.spam.speed.messages) {
                         event.setCancelled(true);
-                        new AnnoyingMessage(plugin, "spam.speed")
+                        plugin.getMessages().get().spam.speed.newMessage()
                                 .replace("%message%", message)
                                 .send(player);
                         return;
@@ -85,7 +85,7 @@ public class ChatListener extends AnnoyingListener {
         }
 
         // Check if format is enabled
-        if (!plugin.config.enableFormat) return;
+        if (!plugin.config.enable_format) return;
 
         // Set format
         String format = plugin.config.format;
@@ -93,10 +93,10 @@ public class ChatListener extends AnnoyingListener {
         format = BukkitUtility.color(format);
 
         // Filter message
-        if (plugin.config.filter.mode != null && !player.hasPermission("chat.filter.bypass") && Boolean.FALSE.equals(plugin.config.filter.mode.function.apply(new ChatEventData(event, plugin, format)))) return;
+        if (plugin.config.filter.mode != FilterMode.DISABLE && !player.hasPermission("chat.filter.bypass") && Boolean.FALSE.equals(plugin.config.filter.mode.function.apply(new ChatEventData(event, plugin, format)))) return;
 
         // Disable chat reporting
-        if (plugin.config.disableChatReporting) {
+        if (plugin.config.disable_chat_reporting) {
             event.setCancelled(true);
             final String message = format
                     .replace("%player%", player.getName())
@@ -115,46 +115,48 @@ public class ChatListener extends AnnoyingListener {
         }
     }
 
-    public static class ChatEventData {
-        @NotNull public final AsyncPlayerChatEvent event;
-        @NotNull public final SimpleChatFormatter plugin;
-        @NotNull public final String format;
+    public record ChatEventData(@NotNull AsyncPlayerChatEvent event, @NotNull SimpleChatFormatter plugin, @NotNull String format) {}
 
-        public ChatEventData(@NotNull AsyncPlayerChatEvent event, @NotNull SimpleChatFormatter plugin, @NotNull String format) {
-            this.event = event;
-            this.plugin = plugin;
-            this.format = format;
-        }
-    }
-
-    private static class TimedMessage {
-        @NotNull private final String message;
-        private final long time;
-
+    private record TimedMessage(@NotNull String message, long time) {
         private TimedMessage(@NotNull String message) {
-            this.message = message;
-            this.time = System.currentTimeMillis();
+            this(message, System.currentTimeMillis());
+        }
+
+        @NotNull
+        private String getNormalized() {
+            return normalize(message);
+        }
+
+        @NotNull
+        private static String normalize(@NotNull String message) {
+            return message
+                    .toLowerCase()
+                    .replaceAll("[^ a-z0-9]", "")
+                    .replaceAll("\\s+", " ")
+                    .trim();
         }
 
         private double similarity(@NotNull String other) {
-            if (message.equals(other)) return 1.0;
-            final int[] mtp = matches(other);
+            final String normalized = getNormalized();
+            other = normalize(other);
+            if (normalized.equals(other)) return 1.0;
+            final int[] mtp = matches(normalized, other);
             final double m = mtp[0];
             if (m == 0) return 0d;
-            final double j = (m / message.length() + m / other.length() + (m - (double) mtp[1] / 2) / m) / 3;
+            final double j = (m / normalized.length() + m / other.length() + (m - (double) mtp[1] / 2) / m) / 3;
             return j < 0.7d ? j : j + 0.1 * mtp[2] * (1d - j);
         }
 
-        @Contract("_ -> new")
-        private int[] matches(@NotNull String other) {
+        @Contract("_, _ -> new")
+        private static int[] matches(@NotNull String first, @NotNull String second) {
             final CharSequence max;
             final CharSequence min;
-            if (message.length() > other.length()) {
-                max = message;
-                min = other;
+            if (first.length() > second.length()) {
+                max = first;
+                min = second;
             } else {
-                max = other;
-                min = message;
+                max = second;
+                min = first;
             }
             final int range = Math.max(max.length() / 2 - 1, 0);
             final int[] matchIndexes = new int[min.length()];
@@ -163,28 +165,34 @@ public class ChatListener extends AnnoyingListener {
             int matches = 0;
             for (int mi = 0; mi < min.length(); mi++) {
                 final char c1 = min.charAt(mi);
-                for (int xi = Math.max(mi - range, 0), xn = Math.min(mi + range + 1, max.length()); xi < xn; xi++) if (!matchFlags[xi] && c1 == max.charAt(xi)) {
-                    matchIndexes[mi] = xi;
-                    matchFlags[xi] = true;
-                    matches++;
-                    break;
+                for (int xi = Math.max(mi - range, 0), xn = Math.min(mi + range + 1, max.length()); xi < xn; xi++) {
+                    if (!matchFlags[xi] && c1 == max.charAt(xi)) {
+                        matchIndexes[mi] = xi;
+                        matchFlags[xi] = true;
+                        matches++;
+                        break;
+                    }
                 }
             }
             final char[] ms1 = new char[matches];
             final char[] ms2 = new char[matches];
-            for (int i = 0, si = 0; i < min.length(); i++) if (matchIndexes[i] != -1) {
-                ms1[si] = min.charAt(i);
-                si++;
+            for (int i = 0, si = 0; i < min.length(); i++) {
+                if (matchIndexes[i] != -1) {
+                    ms1[si] = min.charAt(i);
+                    si++;
+                }
             }
-            for (int i = 0, si = 0; i < max.length(); i++) if (matchFlags[i]) {
-                ms2[si] = max.charAt(i);
-                si++;
+            for (int i = 0, si = 0; i < max.length(); i++) {
+                if (matchFlags[i]) {
+                    ms2[si] = max.charAt(i);
+                    si++;
+                }
             }
             int halfTranspositions = 0;
             for (int mi = 0; mi < ms1.length; mi++) if (ms1[mi] != ms2[mi]) halfTranspositions++;
             int prefix = 0;
             for (int mi = 0; mi < Math.min(4, min.length()); mi++) {
-                if (message.charAt(mi) != other.charAt(mi)) break;
+                if (first.charAt(mi) != second.charAt(mi)) break;
                 prefix++;
             }
             return new int[]{matches, halfTranspositions, prefix};

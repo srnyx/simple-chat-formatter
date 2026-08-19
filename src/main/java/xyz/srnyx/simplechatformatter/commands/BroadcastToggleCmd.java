@@ -8,7 +8,6 @@ import xyz.srnyx.annoyingapi.AnnoyingPlugin;
 import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
 import xyz.srnyx.annoyingapi.data.StringData;
-import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.annoyingapi.message.DefaultReplaceType;
 import xyz.srnyx.annoyingapi.utility.BukkitUtility;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
@@ -67,13 +66,13 @@ public class BroadcastToggleCmd extends AnnoyingCommand {
         final boolean newState = !data.has(KEY);
         data.set(KEY, newState ? true : null);
 
-        // Send message(s) TODO: does sender.cmdSender != player work?
-        new AnnoyingMessage(plugin, "broadcast.toggle.toggler")
+        // Send message(s)
+        plugin.getMessages().get().broadcast.toggle.toggler.newMessage()
                 .replace("%toggler%", target.getName())
                 .replace("%target%", sender.cmdSender.getName())
                 .replace("%state%", newState, DefaultReplaceType.BOOLEAN)
                 .send(sender);
-        if (target instanceof Player && sender.cmdSender != target) new AnnoyingMessage(plugin, "broadcast.toggle.target")
+        if (target instanceof Player && sender.cmdSender != target) plugin.getMessages().get().broadcast.toggle.target.newMessage()
                 .replace("%toggler%", sender.cmdSender.getName())
                 .replace("%target%", target.getName())
                 .replace("%state%", newState, DefaultReplaceType.BOOLEAN)

@@ -1,9 +1,13 @@
 package xyz.srnyx.simplechatformatter;
 
+import org.jetbrains.annotations.NotNull;
 import xyz.srnyx.annoyingapi.AnnoyingPlugin;
-import xyz.srnyx.annoyingapi.PluginPlatform;
 import xyz.srnyx.simplechatformatter.broadcast.Broadcaster;
 import xyz.srnyx.simplechatformatter.commands.BroadcastToggleCmd;
+import xyz.srnyx.simplechatformatter.config.SimpleConfig;
+import xyz.srnyx.simplechatformatter.config.migration.C0001_Nested_typing_sound;
+import xyz.srnyx.simplechatformatter.messages.SCFMessagesProvider;
+import xyz.srnyx.simplechatformatter.stats.FastStats;
 
 
 public class SimpleChatFormatter extends AnnoyingPlugin {
@@ -12,27 +16,33 @@ public class SimpleChatFormatter extends AnnoyingPlugin {
 
     public SimpleChatFormatter() {
         options
-                .pluginOptions(pluginOptions -> pluginOptions.updatePlatforms(
-                        PluginPlatform.modrinth("h3dHO3Sr"),
-                        PluginPlatform.hangar(this),
-                        PluginPlatform.spigot("111804")))
+                .statsOptions(statsOptions -> statsOptions
+                        .bStats(bStatsOptions -> bStatsOptions.id(18617))
+                        .fastStats(fastStatsOptions -> fastStatsOptions.loader(FastStats.class)))
                 .dataOptions(dataOptions -> dataOptions
-                        .enabled(true)
-                        .entityDataColumns(BroadcastToggleCmd.KEY))
-                .bStatsOptions(bStatsOptions -> bStatsOptions.id(18617))
-                .registrationOptions.automaticRegistration.packages(
-                        "xyz.srnyx.simplechatformatter.commands",
-                        "xyz.srnyx.simplechatformatter.listeners");
+                        .entityDataColumns(BroadcastToggleCmd.KEY));
+    }
+
+    @Override @NotNull
+    public SCFMessagesProvider getMessages() {
+        return (SCFMessagesProvider) super.getMessages();
     }
 
     @Override
-    public void enable() {
-        reload();
+    public void load() {
+        config = configLoader.build(builder -> builder
+                .config(new SimpleConfig())
+                .internalStateMigrations(new C0001_Nested_typing_sound()));
+        setupBroadcaster();
     }
 
     @Override
     public void reload() {
-        config = new SimpleConfig(this);
+        config.reload();
+        setupBroadcaster();
+    }
+
+    private void setupBroadcaster() {
         broadcaster = new Broadcaster(this);
     }
 }

@@ -5,7 +5,6 @@ import github.scarsz.discordsrv.dependencies.jda.api.entities.TextChannel;
 import github.scarsz.discordsrv.util.DiscordUtil;
 import org.jetbrains.annotations.NotNull;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
-import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
@@ -18,8 +17,8 @@ public class DiscordBroadcaster {
     }
 
     public void broadcast(@NotNull AnnoyingSender sender, @NotNull String message) {
-        final TextChannel channel = discordSRV.getDestinationTextChannelForGameChannelName(plugin.config.broadcast.discordChannel);
-        if (channel != null) DiscordUtil.sendMessage(channel, new AnnoyingMessage(plugin, "broadcast.discord")
+        final TextChannel channel = discordSRV.getDestinationTextChannelForGameChannelName(plugin.config.broadcast.discord.channel);
+        if (channel != null) DiscordUtil.sendMessage(channel, plugin.getMessages().get().broadcast.discord.newMessage()
                 .replace("%message%", message)
                 .replace("%player%", sender.cmdSender.getName())
                 .toString(sender));

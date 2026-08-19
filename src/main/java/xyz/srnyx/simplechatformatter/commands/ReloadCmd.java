@@ -1,11 +1,8 @@
 package xyz.srnyx.simplechatformatter.commands;
 
 import org.jetbrains.annotations.NotNull;
-
 import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
-import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
-
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
@@ -34,6 +31,6 @@ public class ReloadCmd extends AnnoyingCommand {
     @Override
     public void onCommand(@NotNull AnnoyingSender sender) {
         plugin.reloadPlugin();
-        new AnnoyingMessage(plugin, "reload").send(sender);
+        plugin.getMessages().get().reload.newMessage().send(sender);
     }
 }
