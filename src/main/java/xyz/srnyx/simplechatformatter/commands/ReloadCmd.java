@@ -1,31 +1,13 @@
 package xyz.srnyx.simplechatformatter.commands;
 
 import org.jetbrains.annotations.NotNull;
-import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
-public class ReloadCmd extends AnnoyingCommand {
-    @NotNull private final SimpleChatFormatter plugin;
-
+public class ReloadCmd extends xyz.srnyx.simplechatformatter.commands.generated.ChatreloadCmdGen {
     public ReloadCmd(@NotNull SimpleChatFormatter plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override @NotNull
-    public SimpleChatFormatter getAnnoyingPlugin() {
-        return plugin;
-    }
-
-    @Override @NotNull
-    public String getName() {
-        return "chatreload";
-    }
-
-    @Override @NotNull
-    public String getPermission() {
-        return "chat.reload";
+        super(plugin);
     }
 
     @Override

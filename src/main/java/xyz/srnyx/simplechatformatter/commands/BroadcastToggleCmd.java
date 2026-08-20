@@ -4,8 +4,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import xyz.srnyx.annoyingapi.AnnoyingPlugin;
-import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
 import xyz.srnyx.annoyingapi.data.StringData;
 import xyz.srnyx.annoyingapi.message.DefaultReplaceType;
@@ -16,23 +14,11 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class BroadcastToggleCmd extends AnnoyingCommand {
+public class BroadcastToggleCmd extends xyz.srnyx.simplechatformatter.commands.generated.BroadcasttoggleCmdGen {
     @NotNull public static final String KEY = "broadcast";
 
-    @NotNull private final SimpleChatFormatter plugin;
-
     public BroadcastToggleCmd(@NotNull SimpleChatFormatter plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override @NotNull
-    public AnnoyingPlugin getAnnoyingPlugin() {
-        return plugin;
-    }
-
-    @Override @NotNull
-    public String getPermission() {
-        return "chat.broadcast.toggle";
+        super(plugin);
     }
 
     @Override

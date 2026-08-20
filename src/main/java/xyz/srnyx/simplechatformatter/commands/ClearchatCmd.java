@@ -3,30 +3,16 @@ package xyz.srnyx.simplechatformatter.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.srnyx.annoyingapi.AnnoyingPlugin;
-import xyz.srnyx.annoyingapi.command.AnnoyingCommand;
 import xyz.srnyx.annoyingapi.command.AnnoyingSender;
 import xyz.srnyx.annoyingapi.message.BroadcastType;
 import xyz.srnyx.simplechatformatter.SimpleChatFormatter;
 
 
-public class ClearchatCmd extends AnnoyingCommand {
+public class ClearchatCmd extends xyz.srnyx.simplechatformatter.commands.generated.ClearchatCmdGen {
     private static final int LINES = 100;
 
-    @NotNull private final SimpleChatFormatter plugin;
-
     public ClearchatCmd(@NotNull SimpleChatFormatter plugin) {
-        this.plugin = plugin;
-    }
-
-    @Override @NotNull
-    public AnnoyingPlugin getAnnoyingPlugin() {
-        return plugin;
-    }
-
-    @Override @NotNull
-    public String getPermission() {
-        return "chat.clear";
+        super(plugin);
     }
 
     @Override

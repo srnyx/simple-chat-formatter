@@ -1,6 +1,6 @@
 plugins {
     java
-    id("xyz.srnyx.gradle-galaxy") version "snapshot"
+    id("xyz.srnyx.gradle-galaxy") version "5d63c6e"
     id("com.gradleup.shadow") version "9.6.1"
     id("me.modmuss50.mod-publish-plugin") version "675051c"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
@@ -13,7 +13,7 @@ description = "A very simple plugin to format your chat!"
 galaxy {
     minecraft {
         spigotAPI("1.8.8")
-        annoyingAPI("snapshot")
+        annoyingAPI("f783bf4")
 
         dependency {
             optional {
