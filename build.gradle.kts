@@ -1,6 +1,6 @@
 plugins {
     java
-    id("xyz.srnyx.gradle-galaxy") version "5d63c6e"
+    id("xyz.srnyx.gradle-galaxy") version "c265727"
     id("com.gradleup.shadow") version "9.6.1"
     id("me.modmuss50.mod-publish-plugin") version "675051c"
     id("io.papermc.hangar-publish-plugin") version "0.1.4"
@@ -13,7 +13,7 @@ description = "A very simple plugin to format your chat!"
 galaxy {
     minecraft {
         spigotAPI("1.8.8")
-        annoyingAPI("f783bf4")
+        annoyingAPI("47cd350")
 
         dependency {
             optional {
@@ -47,33 +47,25 @@ galaxy {
                 aliases.addAll("cr", "scfreload")
                 description = "Reloads the plugin"
 
-                permission("reload") {
-                    description = "Allows the player to use /chatreload"
-                }
+                permission("reload")
             }
             command("broadcast") {
                 aliases.addAll("bc")
                 description = "Broadcasts a message to the entire server"
 
-                permission("broadcast") {
-                    description = "Allows the player to use /broadcast"
-                }
+                permission("broadcast")
             }
             command("broadcasttoggle") {
                 aliases.addAll("bctoggle")
                 description = "Toggles all messages being broadcasted"
 
-                permission("broadcast.toggle") {
-                    description = "Allows the player to use /broadcasttoggle"
-                }
+                permission("broadcast.toggle")
             }
             command("clearchat") {
                 aliases.addAll("cc")
                 description = "Clears the chat"
 
-                permission("clear") {
-                    description = "Allows the player to use /clearchat"
-                }
+                permission("clear")
             }
 
             permission("broadcast.toggle.other") {
